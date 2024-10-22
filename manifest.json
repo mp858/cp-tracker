@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "cp tracker",
+    "version": "1.0",
+    "description": "Track live competitive programming contests and user rankings.",
+    "icons": {
+    "16": "icons/captivate1.png"
+  },
+  
+    "action": {
+       "default_icon": {
+        "16": "icons/captivate1.png"
+      },
+      "default_popup": "popup.html"
+      
+    },
+    "permissions": [
+      "activeTab",
+      "storage", "alarms"
+  ]
+  }
+  
