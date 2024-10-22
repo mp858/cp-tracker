@@ -1,218 +1,176 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
-  const leetcodeUsernameInput = document.getElementById('leetcodeUsername');
-  const codeforcesUsernameInput = document.getElementById('codeforcesUsername');
-  const codechefUsernameInput = document.getElementById('codechefUsername');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;    
+      background-color: #2c2f33;
+      color: #fff;
+      width: 350px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin:0;
+    }
+    .container{
+      padding:15px
+    }
+    h3 {
+      color: #f1f1f1;
+      border-bottom: 2px solid #7289da;
+      padding-bottom: 5px;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #7289da;
+      background-color: #23272a;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .profile,button {
+      background-color: #7289da;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .profile:hover,button:hover {
+      background-color: #5b6eae;
+    }
+    .username-item {
+      margin-top: 10px;
+    }
+    .details {
+      margin-top: 5px;
+      padding: 10px;
+      background-color: #444;
+      border-radius: 5px;
+      font-size: 0.9em;
+      color: #9ca9b3;
+    }
+    .details p {
+      margin-bottom: 5px;
+    }
+    /* Footer styles */
+    footer {
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      bottom: 0;
+      width:100%;
+      text-align: center;
+      padding: 5px;
+      background-color: #23272a;
+      color: #fff;
+      font-size: 0.9em;
+      border-top: 2px solid #7289da;
+    }
+    .footer-link {
+     
+      text-decoration: none;
+      margin-left: 5px;
+      color:white;
+    }
+    .footer-link:hover {
+      color: #5b6eae;
+    }
+    /* GitHub icon positioning */
+    .github-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #fff;
+      font-size: 1.8em;
+    }
+    .github-icon:hover {
+      color: #5b6eae;
+    }
+    /* Portfolio link styling */
+    .portfolio-icon {
+      font-size: 1.2em;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .portfolio-icon:hover {
+      color: #5b6eae;
+    }
+    .portfolio-logo img {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 5px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <!-- GitHub Icon -->
+  <a href="https://github.com/mp858" class="github-icon" target="_blank">
+    <i class="fab fa-github"></i>
+  </a>
 
-  // Event Listeners for Add Buttons
-  document.getElementById('addLeetcode').addEventListener('click', () => addUsername('leetcode', leetcodeUsernameInput.value));
-  document.getElementById('addCodeforces').addEventListener('click', () => addUsername('codeforces', codeforcesUsernameInput.value));
-  document.getElementById('addCodechef').addEventListener('click', () => addUsername('codechef', codechefUsernameInput.value));
+  <!-- LeetCode Section -->
+  <div id="leetcode" class="section">
+    <h3 id="leetcodeToggle">LeetCode &#9660;</h3> <!-- Down arrow icon -->
+    <div id="leetcodeContent" class="hidden">
+      <h4>live ranking feature for leetcode is under progress you can fetch rank upto 1000</h4>
+      <input type="text" id="leetcodeUsername" placeholder="Add LeetCode Username">
+      <button id="addLeetcode">Add</button>
+      <div id="leetcodeUsernames" class="username-section"></div>
+    </div>
+  </div>
 
-  // Load saved usernames when extension popup is opened
-  loadUsernames();
+  <!-- Codeforces Section -->
+  <div id="codeforces" class="section">
+    <h3 id="codeforcesToggle">Codeforces &#9660;</h3> <!-- Down arrow icon -->
+    <div id="codeforcesContent" class="hidden">
+      <input type="text" id="codeforcesUsername" placeholder="Add Codeforces Username">
+      <button id="addCodeforces">Add</button>
+      <div id="codeforcesUsernames" class="username-section"></div>
+    </div>
+  </div>
 
-  // Event Listener for section toggles
-  document.getElementById('leetcodeToggle').addEventListener('click', () => toggleSection(leetcodeContent, leetcodeToggle));
-  document.getElementById('codeforcesToggle').addEventListener('click', () => toggleSection(codeforcesContent, codeforcesToggle));
-  document.getElementById('codechefToggle').addEventListener('click', () => toggleSection(codechefContent, codechefToggle));
+  <!-- CodeChef Section -->
+  <div id="codechef" class="section">
+    <h3 id="codechefToggle">CodeChef &#9660;</h3> <!-- Down arrow icon -->
+    <div id="codechefContent" class="hidden">
+      <input type="text" id="codechefUsername" placeholder="Add CodeChef Username">
+      <button id="addCodechef">Add</button>
+      <div id="codechefUsernames" class="username-section"></div>
+    </div>
+  </div>
+</div>
 
-  // Use event delegation for the show/hide/remove buttons
-  document.body.addEventListener('click', (e) => {
-      if (e.target.classList.contains('show-button')) {
-          const platform = e.target.dataset.platform;
-          const username = e.target.dataset.username;
-          showDetails(platform, username);
-          e.target.style.display = 'none'; // Hide Show button
-          e.target.nextElementSibling.style.display = 'inline'; // Show Hide button
-      }
+  <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2024 MUDASSIR PARVEZ. All Rights Reserved.</p>
+    <a href="https://mp858.github.io/my-portfolio/" target="_blank" class="footer-link">
+      <span class="portfolio-logo">
+        <img src="./profile.png" alt="Portfolio Logo">
+      </span>
+      Visit my portfolio
+    </a>
+  </footer>
 
-      if (e.target.classList.contains('hide-button')) {
-          const platform = e.target.dataset.platform;
-          const username = e.target.dataset.username;
-          hideDetails(platform, username);
-          e.target.style.display = 'none'; // Hide Hide button
-          e.target.previousElementSibling.style.display = 'inline'; // Show Show button
-      }
-
-      if (e.target.classList.contains('remove-button')) {
-          const platform = e.target.dataset.platform;
-          const username = e.target.dataset.username;
-          removeUsername(platform, username);
-      }
-  });
-
-  // Toggle section visibility
-  function toggleSection(contentDiv, toggleBtn) {
-      const isHidden = contentDiv.classList.contains('hidden');
-      contentDiv.classList.toggle('hidden', !isHidden);
-
-      // Change arrow direction based on visibility
-      if (isHidden) {
-          toggleBtn.textContent = toggleBtn.textContent.replace('▼', '▲'); // Change to up arrow
-      } else {
-          toggleBtn.textContent = toggleBtn.textContent.replace('▲', '▼'); // Change to down arrow
-      }
-  }
-
-  // Add Username function
-  function addUsername(platform, username) {
-      if (username.trim() === '') return;
-
-      chrome.storage.sync.get([platform], (result) => {
-          let usernames = result[platform] || [];
-          if (!Array.isArray(usernames)) {
-              usernames = []; // Ensure it's an array
-          }
-          usernames.push(username);
-          chrome.storage.sync.set({ [platform]: usernames }, () => {
-              renderUsernames(platform, usernames);
-          });
-      });
-  }
-
-  // Load Usernames from storage
-  function loadUsernames() {
-      ['leetcode', 'codeforces', 'codechef'].forEach((platform) => {
-          chrome.storage.sync.get([platform], (result) => {
-              let usernames = result[platform] || [];
-              if (!Array.isArray(usernames)) {
-                  usernames = []; // Ensure it's an array
-              }
-              renderUsernames(platform, usernames);
-          });
-      });
-  }
-
-  // Render usernames for each platform
-  function renderUsernames(platform, usernames) {
-      if (!Array.isArray(usernames)) {
-          usernames = [];
-      }
-
-      let container = document.getElementById(`${platform}Usernames`);
-      container.innerHTML = ''; // Clear existing usernames
-
-      usernames.forEach((username) => {
-          let div = document.createElement('div');
-          div.className = 'username-item';
-          let u;
-          if(platform=='leetcode'){
-            u=`<a class="profile" href="https://leetcode.com/u/${username}/" target="_blank">${username}</a>`
-          }
-        else if(platform=='codeforces'){
-            u=`<a class="profile" href="https://codeforces.com/profile/${username}/" target="_blank">${username}</a>`
-        }
-        else{
-            u=`<a class="profile" href="https://www.codechef.com/users/${username}/" target="_blank">${username}</a>`
-          }
-          div.innerHTML = `
-            ${u}
-            <button class="show-button" data-platform="${platform}" data-username="${username}">Show</button>
-            <button class="hide-button" data-platform="${platform}" data-username="${username}" style="display: none;">Hide</button>
-            <button class="remove-button" data-platform="${platform}" data-username="${username}">Remove</button>
-            <div class="details" id="details-${platform}-${username}" style="display: none;"></div>
-          `;
-          container.appendChild(div);
-      });
-  }
-
-  // Remove Username function
-  function removeUsername(platform, username) {
-      chrome.storage.sync.get([platform], (result) => {
-          let usernames = result[platform] || [];
-          let updatedUsernames = usernames.filter(u => u !== username);
-          chrome.storage.sync.set({ [platform]: updatedUsernames }, () => {
-              renderUsernames(platform, updatedUsernames);
-          });
-      });
-  }
-
-  // Fetch and show details (rating and title)
-  function showDetails(platform, username) {
-      let detailsDiv = document.getElementById(`details-${platform}-${username}`);
-
-      switch(platform) {
-          case 'leetcode':
-              fetchLeetcodeDetails(username, detailsDiv);
-              break;
-          case 'codeforces':
-              fetchCodeforcesDetails(username, detailsDiv);
-              break;
-          case 'codechef':
-              fetchCodechefDetails(username, detailsDiv);
-              break;
-      }
-      detailsDiv.style.display = 'block'; // Show details
-  }
-
-  // Hide details
-  function hideDetails(platform, username) {
-      let detailsDiv = document.getElementById(`details-${platform}-${username}`);
-      detailsDiv.innerHTML = ''; // Clear details
-      detailsDiv.style.display = 'none'; // Hide details
-  }
-
-  // Fetch LeetCode details
-  function fetchLeetcodeDetails(username, detailsDiv) {
-      fetch('https://cp-tracker-proxy-server.onrender.com/leetcode', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username: username })
-      })
-      .then(response => response.json())
-      .then(data => {
-          let rating = data.data.rating;
-          let title = data.data.title;
-          let rank = data.data.rank;
-          detailsDiv.innerHTML = `Rating: ${rating}, Title: ${title}, Live Ranking: ${rank}`;
-      })
-      .catch((err) => {
-          detailsDiv.innerHTML = 'Error fetching LeetCode details. Invalid username';
-      });
-  }
-
-  // Fetch Codeforces details
-  function fetchCodeforcesDetails(username, detailsDiv) {
-      fetch('https://cp-tracker-proxy-server.onrender.com/codeforces', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username: username })
-      })
-      .then(response => response.json())
-      .then(data => {
-          let rating = data.data.rating;
-          let title = data.data.title;
-          let rank = data.data.rank;
-          detailsDiv.innerHTML = `Rating: ${rating}, Title: ${title}, Live Ranking: ${rank}`;
-      })
-      .catch((err) => {
-          detailsDiv.innerHTML = 'Error fetching Codeforces details. Invalid username';
-      });
-  }
-
-  // Fetch CodeChef details
-  function fetchCodechefDetails(username, detailsDiv) {
-      fetch('https://cp-tracker-proxy-server.onrender.com/codechef', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username: username })
-      })
-      .then(response => response.json())
-      .then(data => {
-          let rating = data.data.rating;
-          let title = data.data.title;
-          let rank = data.data.rank;
-          detailsDiv.innerHTML = `Rating: ${rating}, Title: ${title}, Live Ranking: ${rank}`;
-      })
-      .catch((err) => {
-          detailsDiv.innerHTML = 'Error fetching CodeChef details. Invalid username';
-      });
-  }
-});
+  <script src="popup.js"></script>
+</body>
+</html>
